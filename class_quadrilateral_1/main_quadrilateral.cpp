@@ -3,7 +3,6 @@
 
 #include "class_quadrilateral.h"
 #include <iostream>
-#include <cmath>
 
 using namespace std;
 
@@ -11,9 +10,7 @@ int main () {
 	// Quad - экземпляр класса Quadrilateral
 	Quadrilateral Quad;
 
-	//Производим тестирование кода
-	test_code();
-
+	// Ввод точек четырёхугольника
 	char stop = '1';
 	while (stop == '1')
 	{
@@ -67,18 +64,7 @@ int main () {
 	cin >> ask2;
 	}
 
-	//Находим углы
-	Quad.angle_a=Quad.find_angle(Quad.get_x1(), Quad.get_y1(), Quad.get_x2(), Quad.get_y2(), Quad.get_x3(), Quad.get_y3());
-	Quad.angle_b=Quad.find_angle(Quad.get_x2(), Quad.get_y2(), Quad.get_x3(), Quad.get_y3(), Quad.get_x4(), Quad.get_y4());
-	Quad.angle_c=Quad.find_angle(Quad.get_x3(), Quad.get_y3(), Quad.get_x4(), Quad.get_y4(), Quad.get_x1(), Quad.get_y1());
-	Quad.angle_d=Quad.find_angle(Quad.get_x4(), Quad.get_y4(), Quad.get_x1(), Quad.get_y1(), Quad.get_x2(), Quad.get_y2());
-
-	//Находим стороны
-	Quad.a=Quad.find_length(Quad.get_x1(), Quad.get_y1(), Quad.get_x2(), Quad.get_y2());
-	Quad.b=Quad.find_length(Quad.get_x2(), Quad.get_y2(), Quad.get_x3(), Quad.get_y3());
-	Quad.c=Quad.find_length(Quad.get_x3(), Quad.get_y3(), Quad.get_x4(), Quad.get_y4());
-	Quad.d=Quad.find_length(Quad.get_x4(), Quad.get_y4(), Quad.get_x1(), Quad.get_y1());
-
+	Quad.find_angle_length ();
 	Quad.find_type ();
 	cout << Quad.fin_to_string ();
 	cout << "Start again? 1/0: "; 

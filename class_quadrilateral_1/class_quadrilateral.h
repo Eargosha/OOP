@@ -19,63 +19,73 @@ private:
 	double x3, y3;
 	/// координаты четвертой точки
 	double x4, y4;
-
-public:
-				// Методы класса:
-
 	/// стороны
 	double a,b,c,d;
 	/// углы
 	double angle_a, angle_b, angle_c, angle_d;
-	/// перечислимый тип видов
-	enum Quadik {Sqare, Rhombus, Rectangle, Parallelogram, Deltoid, Trapezoid, Other};
-	Quadik type; //задаем переменную типа этого класса
+	/// тип четырёхугольника
+	std::string type;
+
+public:
+				// Методы класса:
 
 	/// Конструктор
 	Quadrilateral();
-	/// Конструктор в котором 8 сетторов
-	Quadrilateral(double x1_, double y1_,double x2_, double y2_,double x3_, double y3_, double x4_, double y4_);
 
 	/// геттер x,y x i-ой точки (Операция: Прочитать x,y i-ой (i=1,2,3,4) точки четырехугольника)
-	double get_x1() const; double get_y1() const; //i=1
-	double get_x2() const; double get_y2() const; //i=2  															
-	double get_x3() const; double get_y3() const; //i=3
-	double get_x4() const; double get_y4() const; //i=4
+	double get_x1(); double get_y1(); //i=1
+	double get_x2(); double get_y2(); //i=2
+	double get_x3(); double get_y3(); //i=3
+	double get_x4(); double get_y4(); //i=4
+
 	/// сеттер x,y x i-ой точки (Операция: Ввод x,y i-ой (i=1,2,3,4) точки четырехугольника)
 	void set_x1(double x_1); void set_y1(double y_1); //i=1
 	void set_x2(double x_2); void set_y2(double y_2); //i=2 
 	void set_x3(double x_3); void set_y3(double y_3); //i=3 
 	void set_x4(double x_4); void set_y4(double y_4); //i=4 
 
-	/// нахождение длины сторон четырёхугольника (Операция: Нахождение длины сторон четырёхугольника)
-	double find_length (double x1, double y1, double x2, double y2);
+	/// геттеры a,b,c,d (Операция: Прочитать сторону (a,b,c,d) четырехугольника )
+	double get_a(); 
+	double get_b(); 
+	double get_c(); 
+	double get_d(); 
+
+	/// геттеры углов (Операция: Прочитать угол (angle_a, angle_b, angle_c, angle_d) четырехугольника)
+	double get_angle_a(); 
+	double get_angle_b(); 
+	double get_angle_c(); 
+	double get_angle_d(); 
+
+	/// нахождение длины сторон и углов четырёхугольника (Операция: Нахождение характеристик четырёхугольника)
+	void find_angle_length ();
+
+	// /// нахождение длины сторон четырёхугольника (Операция: Нахождение длины сторон четырёхугольника)
+	// void find_length ();
 	
-	/// нахождение углов (Операция: Нахождение углов в градусах четырёхугольника)
-	double find_angle (double x1, double y1, double x2, double y2, double x3, double y3);
+	// /// нахождение углов (Операция: Нахождение углов четырёхугольника)
+	// void find_angle ();
 
 	/// нахождение периметра четырёхугольника (Операция: Расчет P четырехугольника)
-	double P () const;
+	double P ();
 
 	/// нахождение площади четырёхугольника (Операция: Расчет S четырехугольника )
-	double S () const;
+	double S ();
 
 	/// метод to string (Операция: Вывод результатов)
-	std::string fin_to_string () const; //не константа, т.к. в функции происходят вычисления во время вывода
+	std::string fin_to_string (); //не константа, т.к. в функции происходят вычисления во время вывода
 
 	/// определение вида четырёхугольника (Операция: Определить вид четырехугольника)
 	void find_type ();
 
 	/// проверка на выпуклость (Операция: Проверка на выпуклость четырехугольника )
-	bool check_convex() const;
+	std::string check_vip();
 
 	/// радиус описанной окружности (Операция: Расчет радиуса описанной окружности четырехугольника)
-	double rad_around() const;
- 
-	/// радиус вписанной окружности в четырёхугольник (Операция:  Расчет радиуса вписанной окружности четырехугольника)
-	double rad_in() const;
-	
-};
+	double rad_around();
 
-	void test_code ();
+	/// радиус вписанной окружности в четырёхугольник (Операция:  Расчет радиуса вписанной окружности четырехугольника)
+	double rad_in();
+
+};
 
 #endif //CLASS_QUADRILATERAL_H
