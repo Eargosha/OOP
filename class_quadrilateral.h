@@ -1,4 +1,4 @@
-// Автор Eargosha, ИВТ-22
+// Автор Eargosha, Иванов Егор, ИВТ-22
 // Класс квадратов
 
 #ifndef CLASS_QUADRILATERAL_H
@@ -22,15 +22,9 @@ private:
 
 public:
 				// Методы класса:
-
-	/// стороны
-	double a,b,c,d;
-	/// углы
-	double angle_a, angle_b, angle_c, angle_d;
 	/// перечислимый тип видов
 	enum Quadik {Sqare, Rhombus, Rectangle, Parallelogram, Deltoid, Trapezoid, Other};
 	Quadik type; //задаем переменную типа этого класса
-
 	/// Конструктор
 	Quadrilateral();
 	/// Конструктор в котором 8 сетторов
@@ -48,10 +42,22 @@ public:
 	void set_x4(double x_4); void set_y4(double y_4); //i=4 
 
 	/// нахождение длины сторон четырёхугольника (Операция: Нахождение длины сторон четырёхугольника)
-	double find_length (double x1, double y1, double x2, double y2);
+	double find_length (double x1, double y1, double x2, double y2) const;
+
+	/// Методы нахождения длин a,b,c,d
+	double find_a() const;
+	double find_b() const;
+	double find_c() const;
+	double find_d() const;
 	
 	/// нахождение углов (Операция: Нахождение углов в градусах четырёхугольника)
-	double find_angle (double x1, double y1, double x2, double y2, double x3, double y3);
+	double find_angle (double x1, double y1, double x2, double y2, double x3, double y3) const;
+
+	/// Методы нахождения углов a,b,c,d
+	double find_angle_a() const;
+	double find_angle_b() const;
+	double find_angle_c() const;
+	double find_angle_d() const;
 
 	/// нахождение периметра четырёхугольника (Операция: Расчет P четырехугольника)
 	double P () const;
@@ -60,10 +66,10 @@ public:
 	double S () const;
 
 	/// метод to string (Операция: Вывод результатов)
-	std::string fin_to_string () const; //не константа, т.к. в функции происходят вычисления во время вывода
+	std::string fin_to_string () const; 
 
 	/// определение вида четырёхугольника (Операция: Определить вид четырехугольника)
-	void find_type ();
+	typeof type find_type () const;
 
 	/// проверка на выпуклость (Операция: Проверка на выпуклость четырехугольника )
 	bool check_convex() const;
@@ -75,7 +81,9 @@ public:
 	double rad_in() const;
 	
 };
-
-	void test_code ();
+	
+	/// Тестируем код с прямоугольником и параллелограммом
+	void test_code_rectangle ();
+	void test_code_parall ();
 
 #endif //CLASS_QUADRILATERAL_H

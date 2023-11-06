@@ -1,4 +1,4 @@
-// Автор Eargosha, ИВТ-22
+// Автор Eargosha, Иванов Егор, ИВТ-22
 // Класс квадратов
 
 #define _USE_MATH_DEFINES
@@ -6,7 +6,8 @@
 #include <cmath>
 #include <string>
 #include <cassert>
-#include <iostream>
+
+///добавить тест нового обьекта на поиск типа и на поиск углов
 
 /// Конструктор
 	Quadrilateral::Quadrilateral(){
@@ -15,7 +16,7 @@
 		x3 = 0; y3 = 0;
 		x4 = 0; y4 = 0;	}
 
-	/// Конструктор с заданием значений
+/// Конструктор с заданием значений
 	Quadrilateral::Quadrilateral(double x1_, double y1_,double x2_, double y2_,double x3_, double y3_, double x4_, double y4_){
 	set_x1 (x1_);			set_y1 (y1_);
 	set_x2 (x2_);			set_y2 (y2_);
@@ -36,41 +37,42 @@
 	void Quadrilateral::set_x4(double x_4){x4 = x_4;} void Quadrilateral::set_y4(double y_4){y4 = y_4;} //i=4 
 
 /// нахождение длины сторон четырёхугольника (Операция: Нахождение длины сторон четырёхугольника)
-	double Quadrilateral::find_length (double x1, double y1, double x2, double y2) {
+	double Quadrilateral::find_length (double x1, double y1, double x2, double y2) const {
 		return sqrt(pow((x2-x1), 2) + pow((y2-y1),2)); //формула длины стороны четырёхугольника
 	}
 
+/// вычисляем длины сторон a,b,c,d
+	double Quadrilateral::find_a() const{ return find_length(x1,y1,x2,y2); }
+	double Quadrilateral::find_b() const{ return find_length(x2,y2,x3,y3); }
+	double Quadrilateral::find_c() const{ return find_length(x3,y3,x4,y4); }
+	double Quadrilateral::find_d() const{ return find_length(x4,y4,x1,y1); }
+
 /// нахождение углов (Операция: Нахождение углов в градусах четырёхугольника)
-	double Quadrilateral::find_angle (double x1, double y1, double x2, double y2, double x3, double y3)
+	double Quadrilateral::find_angle (double x1, double y1, double x2, double y2, double x3, double y3) const
 	{
 		// Вычисляем характеристики векторов между точками
     	double v1x = x2 - x1;
     	double v1y = y2 - y1;
     	double v2x = x3 - x2;
     	double v2y = y3 - y2;
-    	// double v3x = x4 - x3;
-    	// double v3y = y4 - y3;
-    	// double v4x = x1 - x4;
-    	// double v4y = y1 - y4;
 
-    	double Prod;
     	// Вычисляем векторное произведение векторов
+    	double Prod;
     	Prod = v1x * v2x + v1y * v2y;
-    	return (acos(Prod / (find_length(x1,y1,x2,y2) * find_length(x2,y2,x3,y3)))) * 180.0 / M_PI; // находим углы в градусах
 
-    	// Prod = v2x * v3x + v2y * v3y;
-    	// angle_b = (acos(Prod / (b * c))) * 180.0 / M_PI;
-
-    	// Prod = v3x * v4x + v3y * v4y;
-    	// angle_c = (acos(Prod / (c * d))) * 180.0 / M_PI;
-
-    	// Prod = v4x * v1x + v4y * v1y;
-    	// angle_d = (acos(Prod / (d * a))) * 180.0 / M_PI;
+    	return (acos(Prod / (find_length(x1,y1,x2,y2) * find_length(x2,y2,x3,y3)))) * 180.0 / M_PI; //сразу находим углы в градусах
 	}
+
+/// вычисляем углы a,b,c,d
+	double Quadrilateral::find_angle_a() const{ return find_angle(x1,y1,x2,y2,x3,y3); }
+	double Quadrilateral::find_angle_b() const{ return find_angle(x2,y2,x3,y3,x4,y4); }
+	double Quadrilateral::find_angle_c() const{ return find_angle(x3,y3,x4,y4,x1,y1); }
+	double Quadrilateral::find_angle_d() const{ return find_angle(x4,y4,x1,y1,x2,y2); }
+
 
 /// нахождение периметра четырёхугольника (Операция: Расчет P четырехугольника)
 	double Quadrilateral::P () const{
-		return a+b+c+d;
+		return find_a()+find_b()+find_c()+find_d();
 	}
 
 /// нахождение площади четырёхугольника (Операция: Расчет S четырехугольника )
@@ -79,34 +81,38 @@
 	}
 
 /// определение вида четырёхугольника (Операция: Определить вид четырехугольника)
-	void Quadrilateral::find_type () {
-		bool yes = false; //нужно если нашли фигуру, чтобы не попасть в ложное условие
-		if ((a==b) && (b==c) && (c==d) && (angle_a == angle_b) && (angle_b == angle_c) && (angle_c==angle_d)) {
-			type = Quadik::Sqare; //квадрат    
+	typeof Quadrilateral::type Quadrilateral::find_type () const {
+		bool yes = false; //если нашли уже фигуру, то кидаем метку, чтобы не попасть в ложное условие
+		if ((find_a()==find_b()) && (find_b()==find_c()) && (find_c()==find_d()) && (find_angle_a() == find_angle_b()) && (find_angle_b() == find_angle_c()) && (find_angle_c()==find_angle_d())) {
+			return Quadik::Sqare; 						//квадрат    
 			yes = true;
 		}
-		if ((yes == false) && (a==b) && (b==c) && (c==d) && (angle_a != angle_b) && (angle_d != angle_c) && (angle_a == angle_c) && (angle_d == angle_b)){
-			type = Quadik::Rhombus; //ромб
+		if ((yes == false) && (find_a()==find_b()) && (find_b()==find_c()) && (find_c()==find_d()) && (find_angle_a() != find_angle_b()) && (find_angle_d() != find_angle_c()) && (find_angle_a() == find_angle_c()) && (find_angle_d() == find_angle_b())){
+			return Quadik::Rhombus; 					//ромб
 			yes = true;
 		}
-		if ((yes == false) && (a!=d) && (b!=c) && (a!=b) && (a==c) && (b==d) && (c!=d) && (angle_a == angle_b) && (angle_b == angle_c) && (angle_c==angle_d)){
-			type = Quadik::Rectangle; //прямоугольник
+		if ((yes == false) && (find_a()!=find_d()) && (find_b()!=find_c()) && (find_a()!=find_b()) && (find_a()==find_c()) && (find_b()==find_d()) && (find_c()!=find_d()) && (find_angle_a() == find_angle_b()) && (find_angle_b() == find_angle_c()) && (find_angle_c()==find_angle_d())){
+			return Quadik::Rectangle;					//прямоугольник
 			yes = true;
 		}
-		if ((yes == false) && (a!=d) && (b!=c) && (a!=b) && (a==c) && (b==d) && (c!=d) && (angle_a != angle_b) && (angle_d != angle_c) && (angle_a == angle_c) && (angle_d == angle_b)){
-			type = Quadik::Parallelogram; //параллелограмм
+		int temp3 = (x4-x3)/(x2-x1); //легка проверка на коллинеальность для параллелограмма...
+		bool bo = false;
+		if (temp3 * (x2-x1) == (x4-x3))
+			bo = true;
+		if ((yes == false) && (find_a()!=find_d()) && (find_b()!=find_c()) && (bo==true) && (find_angle_a() != find_angle_b()) && (find_angle_d() != find_angle_c()) ){
+			return Quadik::Parallelogram; 				//параллелограмм
 			yes = true;
 		}
-		if ((yes == false) && (a==d) && (b==c) && (a!=b) && (a!=c) && (d!=b) && (b!=a) && (angle_a == angle_c)){
-			type = Quadik::Deltoid; //дельтоид
+		if ((yes == false) && (find_a()==find_d()) && (find_b()==find_c()) && (find_a()!=find_b()) && (find_a()!=find_c()) && (find_d()!=find_b()) && (find_b()!=find_a()) && (find_angle_a() == find_angle_c())){
+			return Quadik::Deltoid; 					//дельтоид
 			yes = true;
 		}
-		if ((yes == false) && (angle_a != angle_b) && (angle_c != angle_d) && (trunc(angle_a+angle_b) == 180) && (trunc(angle_d+angle_c) == 180)){
-			type = Quadik::Trapezoid; //трапеция общего вида
-			yes = true;
+		 if ((yes == false) && (find_angle_a() != find_angle_b()) && (find_angle_c() != find_angle_d()) && (trunc(find_angle_a()+find_angle_b()) == 180) && (trunc(find_angle_d()+find_angle_c()) == 180)){
+		 	return Quadik::Trapezoid; 					//трапеция общего вида
+		 	yes = true;
 		}
 		if (yes == false)
-			type = Quadik::Other;
+			return Quadik::Other;  //выдает ошибку при компиляции, что нет ретерна, хоть он и есть???
 	}
 
 /// проверка на выпуклость (Операция: Проверка на выпуклость четырехугольника )
@@ -133,19 +139,19 @@
 
 /// радиус описанной окружности (Операция: Расчет радиуса описанной окружности четырехугольника)
 	double Quadrilateral::rad_around() const{
-	double p = (a+b+c+d)/2;  //полупериметр
+	double p = (find_a()+find_b()+find_c()+find_d())/2;  //полупериметр для других четырёхугольников
 	double res = 0;
-	if (type == Quadik::Other)
-		res = 0.25 * sqrt(((a*b+c*d)*(a*d+b*c)*(a*c+b*d))/((p-a)*(p-b)*(p-c)*(p-d)));
-	if (type == Quadik::Sqare)
-		res = a/sqrt(2);
-	if (type == Quadik::Rectangle)
-		res = (sqrt(a * a + b * b))/2;
-	if (type == Quadik::Trapezoid) 
-		{if (d == b) {
-			double h = sqrt(c * c - pow(((a-b)/(2)),2));
-			double temp = sqrt(h*h + pow(((c+b)/(2)),2)); 
-			res = ((temp*c*b)/(4 * sqrt(p*(p-b)*(p-temp)*(p-c)))); }
+	if (find_type() == Quadik::Other)			//если тип другой, вычисляем так
+		res = 0.25 * sqrt(((find_a()*find_b()+find_c()*find_d())*(find_a()*find_d()+find_b()*find_c())*(find_a()*find_c()+find_b()*find_d()))/((p-find_a())*(p-find_b())*(p-find_c())*(p-find_d())));
+	if (find_type() == Quadik::Sqare)			//если тип квадрат, вычисляем так
+		res = find_a()/sqrt(2);
+	if (find_type() == Quadik::Rectangle)		//если тип прямоугольник, вычисляем так	
+		res = (sqrt(find_a() * find_a() + find_b() * find_b()))/2;
+	if (find_type() == Quadik::Trapezoid) 		//если тип трапеция, вычисляем так
+		{if (find_d() == find_b()) {	//проверка на равнобедренность, иначе будет = 0
+			double h = sqrt(find_c() * find_c() - pow(((find_a()-find_b())/(2)),2));
+			double temp = sqrt(h*h + pow(((find_c()+find_b())/(2)),2)); 
+			res = ((temp*find_c()*find_b())/(4 * sqrt(p*(p-find_b())*(p-temp)*(p-find_c())))); }
 			else
 			res = 0.0;}		
 	return res;
@@ -154,92 +160,128 @@
 /// радиус вписанной окружности в четырёхугольник (Операция:  Расчет радиуса вписанной окружности четырехугольника)
 	double Quadrilateral::rad_in() const{
 	double res = 0;
-	if (type == Quadik::Sqare)
-		res = a/2; 
-	if (type == Quadik::Trapezoid)
-		if ((b==d)||(a==c)||(a==b)||(c==d)) //проверяем на равнобедренность
+	if (find_type() == Quadik::Sqare)			//если тип квадрат, вычисляем так
+		res = find_a()/2; 
+	if (find_type() == Quadik::Trapezoid)		//если тип трапеция, вычисляем так
+		if ((find_b()==find_d())||(find_a()==find_c())||(find_a()==find_b())||(find_c()==find_d())) //проверяем на равнобедренность
 			{
-				double h = sqrt(c * c - pow(((a-b)/(2)),2));
+				double h = sqrt(find_c() * find_c() - pow(((find_a()-find_b())/(2)),2));
 				res = h/2; 
 			}
 			else
 			res = 0.0;
-	if (type == Quadik::Rhombus)
+	if (find_type() == Quadik::Rhombus)			//если тип ромб, вычисляем так
 		{
 			double temp;
-			if (angle_a<angle_b)
-				temp = angle_b;
+			if (find_angle_a()<find_angle_b())	//находим больший угол, затем ищем диагонали, а там по формуле
+				temp = find_angle_b();
 			else
-				temp = angle_a;
-			double D_big = (2 * a * sin(temp/2)) - 0.5;
-			double D_smal = sqrt(4*(a*a)-(D_big*D_big));
-			res = (D_big*D_smal)/(4*a);
+				temp = find_angle_a();
+			double D_big = (2 * find_a() * sin(temp/2)) - 0.5;
+			double D_smal = sqrt(4*(find_a()*find_a())-(D_big*D_big));
+			res = (D_big*D_smal)/(4*find_a());
 		}		
 	return res;
 }
  
 /// метод to string (Операция: Вывод результатов)
 	std::string Quadrilateral::fin_to_string () const{
-		std::string ss = "Other";  		//разбиваем перечислимый тип на строки
-		if (type == Quadik::Sqare)
+
+		std::string ss = "Other";  				//разбиваем перечислимый тип на строки
+		if (find_type() == Quadik::Sqare)
 			ss = "Sqare";
-		if (type == Quadik::Rhombus)
+		if (find_type() == Quadik::Rhombus)
 			ss = "Rhombus";
-		if (type == Quadik::Rectangle)
+		if (find_type() == Quadik::Rectangle)
 			ss = "Rectangle";
-		if (type == Quadik::Parallelogram)
+		if (find_type() == Quadik::Parallelogram)
 			ss = "Parallelogram";
-		if (type == Quadik::Deltoid)
+		if (find_type() == Quadik::Deltoid)
 			ss = "Deltoid";
-		if (type == Quadik::Trapezoid)
+		if (find_type() == Quadik::Trapezoid)
 			ss = "Trapezoid";
-		std::string s = "Length a = " + std::to_string(a) + "\n" + "Length b = " + std::to_string(b) + "\n" + "Length c = " + std::to_string(c) + "\n" 
-		+ "Length d = " + std::to_string(d) + "\n" + "A angle = " + std::to_string(angle_a) + "\n" + "B angle = " + std::to_string(angle_b) + "\n" 
-		+ "C angle = " + std::to_string(angle_c) + "\n" + "D angle = " + std::to_string(angle_d) + "\n" 
+												//формируем строку вывода
+		std::string s = "Length a = " + std::to_string(find_a()) + "\n" + "Length b = " + std::to_string(find_b()) + "\n" + "Length c = " + std::to_string(find_c()) + "\n" 
+		+ "Length d = " + std::to_string(find_d()) + "\n" + "A angle = " + std::to_string(find_angle_a()) + "\n" + "B angle = " + std::to_string(find_angle_b()) + "\n" 
+		+ "C angle = " + std::to_string(find_angle_c()) + "\n" + "D angle = " + std::to_string(find_angle_d()) + "\n" 
 		+ "It's a " + ss + "\n" + (check_convex() ? "Your quadrilateral is convex" : "Your quadrilateral is not convex") + "\n"  
 		+ "Circumradius = " + std::to_string(rad_around()) + "\n"  + "Inscribed circle radius = " + std::to_string(rad_in()) + "\n" 
 		+ "S of your quadrilateral = " + std::to_string(S()) + "\n" + "P of your quadrilateral = " + std::to_string(P()) + "\n";  
-		return s;
-	}
+		return s;								//выводим
+	}	
 
-	// Подопытный - прямоугольник (1,3) (4,3) (4,1) (1,1)
-	void test_code () {
+///Производим тестирование кода, подопытный - прямоугольник (1,3) (4,3) (4,1) (1,1)
+	void test_code_rectangle () {
 		Quadrilateral Test;
 	{	
-	Test.set_x1 (1);			Test.set_y1 (3);  //Если использовать конструктор, то он не определяет точки
+	Test.set_x1 (1);			Test.set_y1 (3);  	//устанавливаем точки
 	Test.set_x2 (4);			Test.set_y2 (3);
 	Test.set_x3 (4);			Test.set_y3 (1);
 	Test.set_x4 (1);			Test.set_y4 (1);
 	}
 
-		Test.a=Test.find_length(1,3,4,3);
-		Test.b=Test.find_length(4,3,4,1);
-		Test.c=Test.find_length(4,1,1,1);
-		Test.d=Test.find_length(1,1,1,3);
-		assert(Test.a == 3.0);	
-		assert(Test.b == 2.0);
-		assert(Test.c == 3.0);
-		assert(Test.d == 2.0);
+		assert(Test.find_a() == 3.0);				//проверяем длины
+		assert(Test.find_b() == 2.0);
+		assert(Test.find_c() == 3.0);
+		assert(Test.find_d() == 2.0);
 
-		Test.angle_a=Test.find_angle(1,3,4,3,4,1);
-		Test.angle_b=Test.find_angle(4,3,4,1,1,1);
-		Test.angle_c=Test.find_angle(4,1,1,1,1,3);
-		Test.angle_d=Test.find_angle(1,1,1,3,4,3);
-		assert(Test.angle_a == 90.0);	
-		assert(Test.angle_b == 90.0);
-		assert(Test.angle_c == 90.0);
-		assert(Test.angle_d == 90.0);
+		assert(Test.find_angle_a() == 90.0);		//проверяем углы
+		assert(Test.find_angle_b() == 90.0);
+		assert(Test.find_angle_c() == 90.0);
+		assert(Test.find_angle_d() == 90.0);
 
-		assert(Test.check_convex() == true);
+		assert(Test.check_convex() == true);		//проверяем выпуклость
+
+		Test.find_type();							//проверяем тип
+		assert (Test.find_type() == 2);			
+
+		assert(Test.S() == 6.00);					//проверяем площадь
+		assert(Test.P() == 10.00);					//проверяем периметр
+
+		double temp = round(Test.rad_in()*100)/100;	//проверяем радиус в
+		assert(temp==0);
+		temp = round(Test.rad_around()*100)/100;	//проверяем радиус вокруг
+		assert(temp==1.8);
+	}
+
+///Производим тестирование кода, подопытный - параллелограмм (-4,-5) (3,-2) (16,11) (9,8)
+	void test_code_parall () {
+		Quadrilateral Test;
+	{	
+	Test.set_x1 (-4);			Test.set_y1 (-5);  		//устанавливаем точки
+	Test.set_x2 (3);			Test.set_y2 (-2);
+	Test.set_x3 (16);			Test.set_y3 (11);
+	Test.set_x4 (9);			Test.set_y4 (8);
+	}
+		double temp4 = round(Test.find_a()*100)/100;
+		assert(temp4 == 7.62);	
+		 temp4 = round(Test.find_b()*100)/100;			//проверяем длины, используется округление
+		assert(temp4 == 18.38);
+		 temp4 = round(Test.find_c()*100)/100;
+		assert(temp4 == 7.62);
+		 temp4 = round(Test.find_d()*100)/100;
+		assert(temp4 == 18.38);
+
+		temp4 = (round(Test.find_angle_a()*100)/100);	//проверяем углы, используется округление
+		assert(temp4 == 21.80);
+		temp4 = (round(Test.find_angle_b()*100)/100);	
+		assert(temp4 == 158.2);
+		temp4 = (round(Test.find_angle_c()*100)/100);	
+		assert(temp4 == 21.80);	
+		temp4 = (round(Test.find_angle_d()*100)/100);
+		assert(temp4 == 158.2);	
+
+		assert(Test.check_convex() == true);			//проверяем выпуклость
 
 		Test.find_type();
-		assert (Test.type == 2);
+		assert (Test.find_type() == 3);					//проверяем тип
 
-		assert(Test.S() == 6.00);
-		assert(Test.P() == 10.00);
+		assert(Test.S() == 52.00);						//проверяем площадь
+		temp4 = round(Test.P()*100)/100;
+		assert(temp4 == 52.00);							//проверяем периметр
 
-		double temp = round(Test.rad_in()*100)/100;
+		double temp = round(Test.rad_in()*100)/100;		//проверяем радиус в
 		assert(temp==0);
-		temp = round(Test.rad_around()*100)/100;
-		assert(temp==1.8);
+		temp = round(Test.rad_around()*100)/100;		//проверяем радиус вокруг
+		assert(temp==0);
 	}
