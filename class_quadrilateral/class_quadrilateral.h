@@ -1,5 +1,6 @@
 // Автор Eargosha, Иванов Егор, ИВТ-22
 // Класс квадратов
+// ask something
 
 #ifndef CLASS_QUADRILATERAL_H
 #define CLASS_QUADRILATERAL_H
