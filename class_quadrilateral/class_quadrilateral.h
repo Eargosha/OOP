@@ -5,6 +5,7 @@
 #ifndef CLASS_QUADRILATERAL_H
 #define CLASS_QUADRILATERAL_H
 
+#include <exception>
 #include <string>
 #include <cmath>
 
@@ -23,7 +24,7 @@ private:
 
 public:
 				// Методы класса:
-	/// перечислимый тип видов
+	/// перечислимый тип видов: квадрат, ромб, прямоугольник, параллелограмм, дельтоид, трапезоид, другой
 	enum Quadik {Sqare, Rhombus, Rectangle, Parallelogram, Deltoid, Trapezoid, Other};
 	Quadik type; //задаем переменную типа этого класса
 	/// Конструктор
@@ -45,19 +46,25 @@ public:
 	/// нахождение длины сторон четырёхугольника (Операция: Нахождение длины сторон четырёхугольника)
 	double find_length (double x1, double y1, double x2, double y2) const;
 
-	/// Методы нахождения длин a,b,c,d
+	/// Методы нахождения длины a
 	double find_a() const;
+	/// Методы нахождения длины b
 	double find_b() const;
+	/// Методы нахождения длины c
 	double find_c() const;
+	/// Методы нахождения длины d
 	double find_d() const;
 	
 	/// нахождение углов (Операция: Нахождение углов в градусах четырёхугольника)
 	double find_angle (double x1, double y1, double x2, double y2, double x3, double y3) const;
 
-	/// Методы нахождения углов a,b,c,d
+	/// Методы нахождения угла a в градусах
 	double find_angle_a() const;
+	/// Методы нахождения угла b в градусах
 	double find_angle_b() const;
+	/// Методы нахождения угла c в градусах
 	double find_angle_c() const;
+	/// Методы нахождения угла d в градусах
 	double find_angle_d() const;
 
 	/// нахождение периметра четырёхугольника (Операция: Расчет P четырехугольника)
@@ -83,8 +90,24 @@ public:
 	
 };
 	
-	/// Тестируем код с прямоугольником и параллелограммом
+	/// Тестируем код с прямоугольником
 	void test_code_rectangle ();
+	/// Тестируем код с параллелограммом
 	void test_code_parall ();
+	/// Тестируем код с квадратом (только тип)
+	void test_code_sqare ();
+	/// Тестируем код с ромбом (только тип)
+	void test_code_rhombus ();
+	/// Тестируем код с дельтоид (только тип)
+	void test_code_deltoid ();
+	/// Тестируем код с трапецией (только тип)
+	void test_code_trapezoid ();
+	/// Тестируем код с другим четыреухгольником (только тип)
+	void test_code_other ();
+
+	/// Сохраняем поля класса в бинарный файлик
+	void save_quadik (Quadrilateral& Quad ,const std::string& filename);
+	///	Загружаем поля класса из бинарного файлика
+	void load_quadik (Quadrilateral& Quad ,const std::string& filename);
 
 #endif //CLASS_QUADRILATERAL_H

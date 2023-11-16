@@ -3,8 +3,11 @@
 
 #include "class_quadrilateral.h"
 #include <iostream>
+#include <exception>
+#include <fstream>
 #include <cmath>
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -15,6 +18,11 @@ int main () {
 	// Производим тестирование кода
 	test_code_rectangle();
 	test_code_parall ();
+	test_code_sqare ();
+	test_code_rhombus ();
+	test_code_deltoid ();
+	test_code_trapezoid ();
+	test_code_other ();
 
 	// Динамическое создание объекта
 	Quadrilateral * Quad_din = new Quadrilateral;
@@ -24,7 +32,7 @@ int main () {
 	delete Quad_din; 		//удаление динамического объекта
 
 	// Стат массив из объектов
-	Quadrilateral Quad_mas[1];
+	Quadrilateral Quad_mas[10];
 	Quad_mas[0].set_x1(10);
 	Quad_mas[1].set_x1(-10);
 	cout << "1-st coordinate x of Quad_mas[0] = " << Quad_mas[0].get_x1() << endl;
@@ -33,7 +41,7 @@ int main () {
 	Quadrilateral Quad_mo[2] { Quadrilateral(1,2,3,4,5,6,7,8),
 							   Quadrilateral(8,7,6,5,4,3,2,1) };
 
-	// Массив из указателей на объекты
+	// Стаический массив из указателей на объекты
 	Quadrilateral *Quad_uk[2];
 	Quad_uk[0] = new Quadrilateral();
 	Quad_uk[1] = new Quadrilateral(1,2,3,4,5,6,7,8);	
@@ -45,7 +53,7 @@ int main () {
  	Quadrilateral * * Quad_din_uk = new Quadrilateral* [10];
  	for (int i = 0; i < 10; i++) Quad_din_uk[i] = new Quadrilateral(); //создание
  	for (int i = 0; i < 10; i++) delete Quad_din_uk[i]; //удаление
-	//delete[] Quad_din_uk; //удалить весь		   
+	delete[] Quad_din_uk; //удалить сам массив		   
 
  	// Массив с помощью векторов
  	vector<Quadrilateral> Quad_vec(3);
@@ -54,6 +62,24 @@ int main () {
  	vector<Quadrilateral*> Quad_vec_uk(3);
  	for (int i = 0; i < Quad_vec_uk.size(); i++) Quad_vec_uk[i] = new Quadrilateral(); //создание
 
+ 	char aski;
+	cout << "Load quadrilateral? 1/0: ";
+	cin >> aski;
+	if (aski == '1'){
+		cout << "Enter file name: ";
+		string file_name;
+		cin >> file_name;
+		load_quadik (Quad, file_name);
+	// выводимся
+	cout << "x1 = " << Quad.get_x1() << " y1 = " << Quad.get_y1() << endl;
+	cout << "x2 = " << Quad.get_x2() << " y2 = " << Quad.get_y2() << endl;
+	cout << "x3 = " << Quad.get_x3() << " y3 = " << Quad.get_y3() << endl;
+	cout << "x4 = " << Quad.get_x4() << " y4 = " << Quad.get_y4() << endl;
+
+	cout << Quad.fin_to_string ();					//выводим одним методом все результаты
+	}
+
+	else {
 	char stop = '1';
 	while (stop == '1')
 	{
@@ -107,8 +133,18 @@ int main () {
 	cin >> ask2;
 	}
 
+	cout << "Save quadrilateral? 1/0: ";
+	cin >> ask2;
+	if (ask2 == '1'){
+		cout << "Enter file name: ";
+		string file_name;
+		cin >> file_name;
+		save_quadik (Quad, file_name);
+	}
+
 	cout << Quad.fin_to_string ();					//выводим одним методом все результаты
 	cout << "Start again? 1/0: "; 
 	cin >> stop;									//повторный запуск
+}
 }
 }

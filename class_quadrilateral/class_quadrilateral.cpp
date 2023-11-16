@@ -3,9 +3,15 @@
 
 #define _USE_MATH_DEFINES
 #include "class_quadrilateral.h"
-#include <cmath>
-#include <string>
+#include <iostream>
 #include <cassert>
+#include <typeinfo>
+#include <fstream>
+#include <exception>
+#include <string>
+#include <cmath>
+
+using namespace std;
 
 ///добавить тест нового обьекта на поиск типа и на поиск углов
 
@@ -41,7 +47,7 @@
 		return sqrt(pow((x2-x1), 2) + pow((y2-y1),2)); //формула длины стороны четырёхугольника
 	}
 
-/// вычисляем длины сторон a,b,c,d
+/// вычисляем длины сторон a,b,c,d в градусах
 	double Quadrilateral::find_a() const{ return find_length(x1,y1,x2,y2); }
 	double Quadrilateral::find_b() const{ return find_length(x2,y2,x3,y3); }
 	double Quadrilateral::find_c() const{ return find_length(x3,y3,x4,y4); }
@@ -285,3 +291,131 @@
 		temp = round(Test.rad_around()*100)/100;		//проверяем радиус вокруг
 		assert(temp==0);
 	}
+
+	/// Тестируем код с квадратом (только тип)
+	void test_code_sqare () {
+		Quadrilateral Test;
+	{	
+	Test.set_x1 (4);			Test.set_y1 (5);  		//устанавливаем точки
+	Test.set_x2 (4);			Test.set_y2 (2);
+	Test.set_x3 (1);			Test.set_y3 (2);
+	Test.set_x4 (1);			Test.set_y4 (5);
+	}
+	assert (Test.find_type() == 0);					//проверяем тип
+}
+
+	/// Тестируем код с ромбом (только тип)
+	void test_code_rhombus () {
+		Quadrilateral Test;
+	{	
+	Test.set_x1 (0);			Test.set_y1 (2);  		//устанавливаем точки
+	Test.set_x2 (2);			Test.set_y2 (6);
+	Test.set_x3 (4);			Test.set_y3 (1);
+	Test.set_x4 (2);			Test.set_y4 (-2);
+	}
+	assert (Test.find_type() == 3);					//проверяем тип
+}
+
+	/// Тестируем код с дельтоид (только тип)
+	void test_code_deltoid () {
+		Quadrilateral Test;
+	{	
+	Test.set_x1 (2);			Test.set_y1 (1);  		//устанавливаем точки
+	Test.set_x2 (3);			Test.set_y2 (5);
+	Test.set_x3 (2);			Test.set_y3 (7);
+	Test.set_x4 (1);			Test.set_y4 (5);
+	}
+	assert (Test.find_type() == 3);					//проверяем тип
+}
+
+	/// Тестируем код с трапецией (только тип)
+	void test_code_trapezoid () {
+		Quadrilateral Test;
+	{	
+	Test.set_x1 (2);			Test.set_y1 (6);  		//устанавливаем точки
+	Test.set_x2 (8);			Test.set_y2 (6);
+	Test.set_x3 (10);			Test.set_y3 (0);
+	Test.set_x4 (0);			Test.set_y4 (0);
+	}
+	assert (Test.find_type() == 5);					//проверяем тип
+}
+	
+	/// Тестируем код с другим четыреухгольником (только тип)
+	void test_code_other () {
+		Quadrilateral Test;
+	{	
+	Test.set_x1 (2);			Test.set_y1 (6);  		//устанавливаем точки
+	Test.set_x2 (8);			Test.set_y2 (6);
+	Test.set_x3 (10);			Test.set_y3 (0);
+	Test.set_x4 (0);			Test.set_y4 (0);
+	}
+
+	assert (Test.find_type() == 5);					//проверяем тип
+}
+
+	/// Сохраняем поля класса в бинарный файлик
+	void save_quadik (Quadrilateral& Quad, const std::string& filename)
+{
+	std::ofstream file(filename, ios::binary);
+ 	if (file.is_open()) {
+ 		double temp;
+ 		temp = Quad.get_x1();
+        file.write(reinterpret_cast< char*>(&temp), sizeof(temp));
+        temp = Quad.get_x2();
+        file.write(reinterpret_cast< char*>(&temp), sizeof(temp));
+        temp = Quad.get_x3();
+        file.write(reinterpret_cast< char*>(&temp), sizeof(temp));
+        temp = Quad.get_x4();
+        file.write(reinterpret_cast< char*>(&temp), sizeof(temp));
+        temp = Quad.get_y1();
+        file.write(reinterpret_cast< char*>(&temp), sizeof(temp));
+        temp = Quad.get_y2();
+        file.write(reinterpret_cast< char*>(&temp), sizeof(temp));
+        temp = Quad.get_y3();
+        file.write(reinterpret_cast< char*>(&temp), sizeof(temp));
+        temp = Quad.get_y4();
+        file.write(reinterpret_cast< char*>(&temp), sizeof(temp));
+        file.close();
+        std::cout << "Succesfully saved" << endl;
+        }
+    else {
+        throw std::runtime_error("File_is_not_found_:(");
+	}
+}
+
+	///	Загружаем поля класса из бинарного файлика
+	void load_quadik (Quadrilateral& Quad, const std::string& filename)
+{
+	std::ifstream file(filename, ios::binary);
+ 	if (file.is_open()) {
+ 		double temp;
+        file.read(reinterpret_cast<char*>(&temp), sizeof(temp));
+        Quad.set_x1(temp);
+        
+        file.read(reinterpret_cast<char*>(&temp), sizeof(temp));
+        Quad.set_x2(temp);
+        
+        file.read(reinterpret_cast<char*>(&temp), sizeof(temp));
+        Quad.set_x3(temp);
+        
+        file.read(reinterpret_cast<char*>(&temp), sizeof(temp));
+        Quad.set_x4(temp);
+        
+        file.read(reinterpret_cast<char*>(&temp), sizeof(temp));
+        Quad.set_y1(temp);
+        
+        file.read(reinterpret_cast<char*>(&temp), sizeof(temp));
+        Quad.set_y2(temp);
+        
+        file.read(reinterpret_cast<char*>(&temp), sizeof(temp));
+        Quad.set_y3(temp);
+        
+        file.read(reinterpret_cast<char*>(&temp), sizeof(temp));
+        Quad.set_y4(temp);
+		file.close();
+		std::cout << "Succesfully loaded" << endl;
+        }
+    else {
+        throw std::runtime_error("File_is_not_found_:(");
+		}
+}	
