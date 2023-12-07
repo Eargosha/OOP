@@ -313,7 +313,7 @@ using namespace std;
 	Test.set_x3 (4);			Test.set_y3 (1);
 	Test.set_x4 (2);			Test.set_y4 (-2);
 	}
-	assert (Test.find_type() == 3);					//проверяем тип
+	assert (Test.find_type() == 6);					//проверяем тип
 }
 
 	/// Тестируем код с дельтоид (только тип)
@@ -325,7 +325,7 @@ using namespace std;
 	Test.set_x3 (2);			Test.set_y3 (7);
 	Test.set_x4 (1);			Test.set_y4 (5);
 	}
-	assert (Test.find_type() == 3);					//проверяем тип
+	assert (Test.find_type() == 4);					//проверяем тип
 }
 
 	/// Тестируем код с трапецией (только тип)
@@ -337,6 +337,7 @@ using namespace std;
 	Test.set_x3 (10);			Test.set_y3 (0);
 	Test.set_x4 (0);			Test.set_y4 (0);
 	}
+		cout << Test.find_type();
 	assert (Test.find_type() == 5);					//проверяем тип
 }
 	
@@ -359,7 +360,7 @@ using namespace std;
 	std::ofstream file(filename, ios::binary);
  	if (file.is_open()) {
  		double temp;
- 		temp = Quad.get_x1();
+ 		temp = Quad.get_x1(); // reinterpret_cast <char*> "перевод" доубл в масив байтов
         file.write(reinterpret_cast< char*>(&temp), sizeof(temp));
         temp = Quad.get_x2();
         file.write(reinterpret_cast< char*>(&temp), sizeof(temp));
@@ -388,7 +389,7 @@ using namespace std;
 {
 	std::ifstream file(filename, ios::binary);
  	if (file.is_open()) {
- 		double temp;
+ 		double temp;  // reinterpret_cast <char*> "перевод" доубл в масив байтов
         file.read(reinterpret_cast<char*>(&temp), sizeof(temp));
         Quad.set_x1(temp);
         

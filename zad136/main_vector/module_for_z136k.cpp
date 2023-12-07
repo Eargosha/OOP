@@ -29,10 +29,10 @@
     {
 
         /// Функция суммы элементов массива - 136к
-        float summ_array_136k(vector<float> &arr, unsigned size)
+        float summ_array_136k(const vector<float> &arr)
         {
             float sum = 0;                                      // Переменная для счёта
-            for (unsigned i = 0; i < size; i++)                 // Цикл самого счёта элементов
+            for (unsigned i = 0; i < arr.size(); i++)                 // Цикл самого счёта элементов
             {   
                 sum = sum + arr[i];
             }
@@ -40,10 +40,10 @@
         }
 
         /// Функция заполнения массива рандомными цифрами. low, hign - для диапозана
-        void rand_fill_array(vector<float> &arr, unsigned size, int hign, int low)
+        void rand_fill_array(vector<float> &arr, int hign, int low)
         {
             int diap = hign - low;                              // Диапозон рандома
-            for (unsigned i = 0; i<size; i++)                   // Цикл для ввода заполнения
+            for (unsigned i = 0; i<arr.size(); i++)                   // Цикл для ввода заполнения
             {
                 arr[i] = (float)rand()/RAND_MAX*diap+low;   // Сама функция заполнения массива
                 //RAND_MAX - константа записанная в бибилиотеке cstdlib.  Гарантируется, что это значение не менее 32767
@@ -51,7 +51,7 @@
         }
 
         /// Функция вывода массива в текстовый файл
-        void array_to_file(vector<float> &arr, unsigned size, const string &file_name)
+        void array_to_file(const vector<float> &arr, const string &file_name)
         {
             ofstream file(file_name);                           // Открытие файла Out file stream
             if (!file.is_open())                                // Если не открыт файл
@@ -59,7 +59,7 @@
                     throw runtime_error("File not found");               // Если что, то в ошибку
                     //return;
                 }
-            for (unsigned i=0; i<size; i++)                     // Цикл для вывода массива в файл
+            for (unsigned i=0; i<arr.size(); i++)                     // Цикл для вывода массива в файл
             {
                 file << arr[i] << endl;                         // Выводим элемент, затем новую строку
             }
@@ -87,7 +87,7 @@
         }
 
         /// Функция загрузки массива из файла
-        void array_from_file(vector<float> &arr, int size,  const string &file_name)
+        void array_from_file(vector<float> &arr,  const string &file_name)
         {
             ifstream file(file_name);                           // Открытие файла In file stream
             if (!file.is_open())                                // Если не открыт файл
@@ -95,10 +95,33 @@
                     throw runtime_error("File not found");      // Если что, то в ошибку
                    // cout << "File not found:" << endl;          // Если что, то в ошибку
                 }
-            for (unsigned i = 0; i < size; i++)                 // Цикл для чтения массива из файла
+            for (unsigned i = 0; i < arr.size(); i++)                 // Цикл для чтения массива из файла
             {
                 file >> arr[i];                                 // Построчно числа в массив
             }
         }
+
+        ///Загоняет массив в бинарный файл
+        void array_to_bin_file(const vector<float> &arr, const string& file_name) 
+        {
+            unsigned temp = arr.size();
+            ofstream file(file_name, ios::binary);
+            file.write(reinterpret_cast<const char*>(& temp), sizeof( temp));
+            for (int i = 0; i < temp; i++)
+                file.write(reinterpret_cast<const char*>(&arr[i]), sizeof(float));
+            file.close();
+        }
+
+        ///Выгоняет массив из бинарного файла
+        void array_from_bin_file(vector<float> &arr, unsigned size, const string& file_name) 
+        {
+            ifstream file(file_name, ios::binary);
+            file.read(reinterpret_cast<char*>(& size), sizeof( size));
+            arr.resize(size);
+            for (int i = 0; i < size; i++)
+                file.read(reinterpret_cast<char*>(&arr[i]), sizeof(float));
+            file.close();
+        }
+
 
     }   
