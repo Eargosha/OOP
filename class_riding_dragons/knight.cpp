@@ -4,6 +4,8 @@
 #include <exception>
 #include <stdexcept>
 #include <iostream>
+#include <assert.h>
+#include <cmath>
 #include "knight.h"
 
 using namespace std;
@@ -85,7 +87,18 @@ using namespace std;
 	return s;
 	}
 
+	/// Тест для меча
+	void test_sword(){
+		Sword test("Mech", 50.0, 50.0, Sword::Type_4::Long);
 
+		assert(test.get_name() == "Mech");
+		assert(test.get_sharpness() == 0.5);
+		assert(test.get_damage() == 50.0);
+		assert(test.get_type() == Sword::Type_4::Long);
+
+		double temp44 = round(test.total_damage()*100)/100;
+		assert(temp44 == 20);
+	}
 
 
     								///Class Knight
@@ -141,14 +154,14 @@ using namespace std;
 
 
 	/// Метод атаки дракона
-	void Knight::dragon_attack (Riding_Dragon& enemy){
-		cout << "Knight " << name << " attacks " << enemy.get_name() << ", dealing " << power*weapon.total_damage() << " HP damage!"<<endl;
+	string Knight::dragon_attack (Riding_Dragon& enemy){
 		enemy.set_health(enemy.get_health() - (power*weapon.total_damage()));
+		return "Knight " + name + " attacks " + enemy.get_name() +", dealing " + std::to_string(power*weapon.total_damage()) + " HP damage!\n";
 	}
     /// Метод лечения своего дракона
-    void Knight::heal_dragon (Riding_Dragon& friend_){
-    	cout << "Knight " << name << " heals " << friend_.get_name() << ", restoring " << 150*relations << " HP points!"<<endl;
+    string Knight::heal_dragon (Riding_Dragon& friend_){
    		friend_.set_health(friend_.get_health()+(150*relations));
+   		return "Knight " + name + " heals " + friend_.get_name() +", restoring " +std::to_string(150*relations) + " HP points!\n";
     }
 
     /// Метод вывода рыцаря в строку
@@ -157,4 +170,22 @@ using namespace std;
     	s = "Yeah, it is a knight, his name is " + name + ", it have " + std::to_string(relations) + " %" + " of relations and "+ std::to_string(power) + " points of power\n";
     	s = s + weapon.to_string();
     	return s;
+    }
+
+	/// Тест для рыцаря
+    void test_knight(){
+    	Knight test("Hooly", 50.0, 25.0, "Rud", 50.0, 50.0, Sword::Type_4::Short);
+
+    	assert(test.get_name()=="Hooly");
+    	assert(test.get_relations()==0.5);
+    	assert(test.get_power()==25.0);
+
+		Seadle *saed = new Seadle(7.0, Seadle::Color_4::Green, Seadle::Material_4::Leather);
+		Hydra bolna_bl("Biba", Draconate::Element_4::Fire, 2000.0, 400.0, 10.0, 100.0, 10.0, saed, 2);
+
+    	test.dragon_attack(bolna_bl);   //тестируем урон, хил
+    	assert(bolna_bl.get_health()==1687.5);
+
+    	test.heal_dragon(bolna_bl);
+    	assert(bolna_bl.get_health()==1762.5);
     }

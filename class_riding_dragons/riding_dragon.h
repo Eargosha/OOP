@@ -56,6 +56,9 @@ public:
 
 };
 
+///Тетсты класса Seadle
+void test_seadle ();
+
 ///Class Riding_Dragon: имя, элемент, здоровье, выносливость, сила, скорость, размах крыльев, седло(класс Seadle)
 class Riding_Dragon {
 public:
@@ -128,23 +131,23 @@ public:
 
 
     /// Метод атаки врага в ближнем бою
-    virtual void dragon_melee_attack (Riding_Dragon& enemy) = 0;
+    virtual string dragon_melee_attack (Riding_Dragon& enemy) = 0;
     /// Метод атаки врага в дальнем бою
-    virtual void dragon_ranged_attack (Riding_Dragon& enemy) = 0;
+    virtual string dragon_ranged_attack (Riding_Dragon& enemy) = 0;
 
 
     /// Метод проверки дракона на летабельность
     bool flight_ability_check();
     /// Метод рыка дракона
-    virtual void roar() = 0;
+    virtual string roar() = 0;
     /// Метод вывода дракона в строку
     virtual string to_string() = 0;
 
 
     ///Функция для создания рандомного числа от min до max, нужно для многих штук
     double Rand(int min, int max);
-};
 
+};
 
 
 /// С помощью наследования получаем следующие классы, перенимая все поля и методы из Riding_Dragon
@@ -173,14 +176,18 @@ public:
     /// Метод говорения сообщения рыцарю
     string speak_to_knight(const string& message);
     /// Метод атаки врага в ближнем бою
-    void dragon_melee_attack (Riding_Dragon& enemy) override;
+    string dragon_melee_attack (Riding_Dragon& enemy) override;
     /// Метод атаки врага в дальнем бою
-    void dragon_ranged_attack (Riding_Dragon& enemy) override;
+    string dragon_ranged_attack (Riding_Dragon& enemy) override;
     /// Метод вывода Драконейта в строку
     string to_string() override;
     /// Метод рыка драконейта
-    void roar() override;
+    string roar() override;
 }; 
+
+///Тестирование класса Draconate
+    void test_draconate();
+
 
 
 /// Class Hydra: кол-во голов гидры, наследование от Riding_Dragons
@@ -203,17 +210,21 @@ public:
 
 
     /// Метод атаки врага в ближнем бою
-    void dragon_melee_attack (Riding_Dragon& enemy) override;
+    string dragon_melee_attack (Riding_Dragon& enemy) override;
     /// Метод атаки врага в дальнем бою
-    void dragon_ranged_attack (Riding_Dragon& enemy) override;
+    string dragon_ranged_attack (Riding_Dragon& enemy) override;
     /// Метод переговоров между головами Гидры
-    void conversation ();
+    string conversation ();
     /// Метод рыка Гидры
-    void roar() override;
+    string roar() override;
 
 
     string to_string() override;
 }; 
+
+///Тестирование класса Hydra
+    void test_hydra();
+
 
 
 /// Получаем наследованием класс Виверны, наследование от Riding_Dragons
@@ -242,18 +253,20 @@ public:
 
 
     /// Метод атаки врага в ближнем бою
-    void dragon_melee_attack (Riding_Dragon& enemy) override;
+    string dragon_melee_attack (Riding_Dragon& enemy) override;
     /// Метод атаки врага в дальнем бою
-    void dragon_ranged_attack (Riding_Dragon& enemy) override;
+    string dragon_ranged_attack (Riding_Dragon& enemy) override;
     /// Метод рандомной атаки, зависит от агрессивности
-    void random_attack (Riding_Dragon& enemy);
+    string random_attack (Riding_Dragon& enemy);
     /// Метод рыка Гидры
-    void roar() override;
+    string roar() override;
 
 
     string to_string() override;
 }; 
 
+///Тестирование класса Wyvern
+void test_wyvern();
 
 
 #endif //RIDING_DRAGON_H

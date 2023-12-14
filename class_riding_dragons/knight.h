@@ -62,6 +62,9 @@ public:
     string to_string();
 };
 
+///Тест для меча
+void test_sword();
+
 /// Class Knight: имя, уровень отношения с дрг, сила, меч
 class Knight {
 protected:
@@ -106,12 +109,15 @@ public:
  
 
     /// Метод атаки врага в ближнем бою
-    void dragon_attack (Riding_Dragon& enemy);
+    string dragon_attack (Riding_Dragon& enemy);
     /// Метод лечения своего дракона
-    void heal_dragon (Riding_Dragon& friend_);
+    string heal_dragon (Riding_Dragon& friend_);
 
     /// Метод вывода рыцаря в строку
     string to_string();
 };
+
+    //Тест для рыцаря
+    void test_knight();
 
 #endif //KNIGHT_H

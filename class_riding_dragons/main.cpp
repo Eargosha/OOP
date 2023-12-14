@@ -11,6 +11,16 @@ using namespace std;
 int main()
 {
 	srand((time(NULL)));
+
+		//Тесты
+	test_seadle();
+	test_draconate();
+	test_hydra();
+	test_wyvern();
+	test_sword();
+	test_knight();
+
+
 	cout << "Welcome to riding dragon something like a console thing?.." << endl;
 	cout << "Anyway let's get started..." << endl;
 
@@ -21,7 +31,7 @@ int main()
 	cout<<"========================================= First dragon ========================================="<< endl;
 	string nume = "Snowfoot";
 	Wyvern snowfoot(nume, Riding_Dragon::Element_4::Air, 10000.0, 500.0, 10.0, 500.0, 0,sed, 50, 50); //создаем обьект класса виверны
-	snowfoot.roar();
+	cout<<snowfoot.roar();
 	cout << snowfoot.to_string();
 
 	cout<<"His knight"<< endl;
@@ -31,7 +41,7 @@ int main()
 	cout<<"========================================= Second dragon ========================================="<< endl;
 	nume = "Aevere";
 	Hydra aevere(nume, Riding_Dragon::Element_4::Earth, 5000.0, 500.0, 25.0, 500.0, 5,sed, 3);	//создаем обьект класса гидры
-	aevere.roar();
+	cout<<aevere.roar();
 	cout << aevere.to_string();
 
 	cout<<"His knight"<< endl;
@@ -41,26 +51,26 @@ int main()
 	cout<<"========================================= Third dragon ========================================="<< endl;
 	nume = "Kazyan";
 	Draconate kazyan(nume, Riding_Dragon::Element_4::Fire, 8000.0, 500.0, 20.0, 500.0, 5,sed, 30);	//создаем обьект класса драконейт
-	kazyan.roar();
+	cout<<kazyan.roar();
 	cout << kazyan.to_string();
 					/// Да начнется бой
 	cout<<"==================================== Let's start the battle! ==================================="<< endl;
 		//Тут происходят баталии между драконами и рыцарями
 	cout<<kazyan.speak_to_knight("I will smash u'll like a boiled potato!")<<endl;
-	kazyan.dragon_melee_attack(snowfoot);
-	kazyan.dragon_ranged_attack(aevere);
+	cout<<kazyan.dragon_melee_attack(snowfoot);
+	cout<<kazyan.dragon_ranged_attack(aevere);
 
-	ric_1.heal_dragon(snowfoot);
+	cout<<ric_1.heal_dragon(snowfoot);
 
-	snowfoot.roar();
-	snowfoot.random_attack(kazyan);
-	snowfoot.dragon_melee_attack(aevere);
+	cout<<snowfoot.roar();
+	cout<<snowfoot.random_attack(kazyan);
+	cout<<snowfoot.dragon_melee_attack(aevere);
 
-	aevere.conversation();
-	aevere.roar();
-	aevere.dragon_ranged_attack(snowfoot);
-	ric_2.dragon_attack(kazyan);
-	aevere.dragon_melee_attack(kazyan);
+	cout<<aevere.conversation();
+	cout<<aevere.roar();
+	cout<<aevere.dragon_ranged_attack(snowfoot);
+	cout<<ric_2.dragon_attack(kazyan);
+	cout<<aevere.dragon_melee_attack(kazyan);
 		//В конце выведется статистика того, что они натворили
 	cout<<"========================================= At the end... ========================================"<< endl;
 	cout << "~~~~~~~~~~~ First dragon: ~~~~~~~~~~~" << endl;
